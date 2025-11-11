@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# ✅ Setup Chrome
+# Setup Chrome
 options = Options()
 options.add_argument("--start-maximized")
 service = Service(r"C:\Program Files\Google\chromedriver-win64\chromedriver-win64\chromedriver.exe")
@@ -21,17 +21,17 @@ try:
         url = f"https://www.zumper.com/apartments-for-rent/toronto-on?page={page_num}"
         driver.get(url)
 
-        # ✅ Scroll down multiple times to load all dynamic content
+        # Scroll down multiple times to load all dynamic content
         for i in range(3):
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(3)
 
-        # ✅ Wait until addresses appear
+        # Wait until addresses appear
         WebDriverWait(driver, 20).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'p[class*="fullAddress"]'))
         )
 
-        # ✅ Parse page source after scrolling
+        # Parse page source after scrolling
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         listings = soup.find_all('div', class_='css-1jk41f4')
         print(f"Page {page_num}: {len(listings)} listings")
@@ -67,7 +67,7 @@ try:
                 "address": address
             })
 
-    # ✅ Save to CSV
+    # Save to CSV
     with open(r"D:\Analytics\Glocal\rent price\toronto_listings.csv", mode="w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=["price", "bedrooms", "baths", "address"])
         writer.writeheader()
@@ -75,3 +75,4 @@ try:
 
 finally:
     driver.quit()
+
